@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, NavLink, Link } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, NavLink, Link } from 'react-router-dom'
 import Home from './components/Home'
 import LedgerEditor from './components/LedgerEditor'
 import LedgerList from './components/LedgerList'
@@ -31,7 +31,7 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Toast 
+        <Toast
           type={toast.type}
           message={toast.message}
           isVisible={toast.isVisible}
