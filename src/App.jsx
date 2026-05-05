@@ -60,7 +60,7 @@ function App() {
                 Saved Ledgers
               </NavLink>
               <div style={{ width: '1px', height: '1.5rem', background: 'var(--glass-border)', margin: '0 0.5rem' }}></div>
-              <NavLink
+              {/* <NavLink
                 to="/catering"
                 className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 onClick={(e) => handleNavClick(e, '/catering')}
@@ -74,7 +74,7 @@ function App() {
                 onClick={(e) => handleNavClick(e, '/catering/saved')}
               >
                 Saved Catering
-              </NavLink>
+              </NavLink> */}
             </div>
           ) : (
             <div></div> /* Empty div to maintain flex spacing if needed */
