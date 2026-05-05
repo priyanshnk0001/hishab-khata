@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (mobile, password) => {
     try {
-      const response = await fetch('http://localhost:9000/login', {
+      const response = await fetch('https://hishab-khata-backend.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile_number: mobile, password })
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, mobile, password) => {
     try {
-      const response = await fetch('http://localhost:9000/user-data', {
+      const response = await fetch('https://hishab-khata-backend.onrender.com/user-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, mobile_number: mobile, password })

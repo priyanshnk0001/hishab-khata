@@ -31,7 +31,7 @@ export const getLedgers = async () => {
   if (!mobile) return [];
   
   try {
-    const response = await fetch(`http://localhost:9000/hishab-data?mobile=${mobile}`);
+    const response = await fetch(`https://hishab-khata-backend.onrender.com/hishab-data?mobile=${mobile}`);
     const result = await response.json();
     const data = result.data || [];
     // Normalize MongoDB _id to id for frontend compatibility
@@ -48,7 +48,7 @@ export const saveLedger = async (ledger) => {
   if (!mobile) throw new Error("Unauthenticated users cannot save ledgers");
 
   try {
-    const response = await fetch('http://localhost:9000/hishab-data', {
+    const response = await fetch('https://hishab-khata-backend.onrender.com/hishab-data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -79,7 +79,7 @@ export const saveLedger = async (ledger) => {
 
 export const deleteLedger = async (id) => {
   try {
-    const response = await fetch(`http://localhost:9000/hishab-data/${id}`, {
+    const response = await fetch(`https://hishab-khata-backend.onrender.com/hishab-data/${id}`, {
       method: 'DELETE'
     });
     if (!response.ok) throw new Error('Failed to delete ledger');
@@ -91,7 +91,7 @@ export const deleteLedger = async (id) => {
 
 export const getLedgerById = async (id) => {
   try {
-    const response = await fetch(`http://localhost:9000/hishab-data`);
+    const response = await fetch(`https://hishab-khata-backend.onrender.com/hishab-data`);
     const result = await response.json();
     const ledger = result.data.find(l => l._id === id || l.id === id);
     if (ledger) {
