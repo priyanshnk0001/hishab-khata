@@ -8,13 +8,16 @@ function LedgerView() {
   const [ledger, setLedger] = useState(null)
 
   useEffect(() => {
-    const data = getLedgerById(id)
-    if (data) {
-      setLedger(data)
-    } else {
-      navigate('/saved')
-    }
-  }, [id, navigate])
+    const fetchLedger = async () => {
+      const data = await getLedgerById(id);
+      if (data) {
+        setLedger(data);
+      } else {
+        navigate('/saved');
+      }
+    };
+    fetchLedger();
+  }, [id, navigate]);
 
   const rowsWithBalance = useMemo(() => {
     if (!ledger) return []

@@ -8,9 +8,8 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
-    username: '',
-    password: '',
-    mobile: ''
+    mobile: '',
+    password: ''
   });
 
   const { login, signup, isAuthenticated } = useAuth();
@@ -36,14 +35,18 @@ const Auth = () => {
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
-    setFormData({ name: '', username: '', password: '', mobile: '' });
+    setFormData({ name: '', mobile: '', password: '' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isLogin) {
-      const result = login(formData.username, formData.password);
+      if (!formData.mobile || !formData.password) {
+        showToast('Please enter both mobile number and password', 'error');
+        return;
+      }
+      const result = await login(formData.mobile, formData.password);
       if (result.success) {
         showToast('Login successful!', 'success');
         navigate('/');
@@ -52,7 +55,7 @@ const Auth = () => {
       }
     } else {
       // Validate inputs
-      if (!formData.name || !formData.username || !formData.password || !formData.mobile) {
+      if (!formData.name || !formData.mobile || !formData.password) {
         showToast('All fields are required', 'error');
         return;
       }
@@ -65,7 +68,7 @@ const Auth = () => {
         return;
       }
 
-      const result = signup(formData.name, formData.username, formData.password, formData.mobile);
+      const result = await signup(formData.name, formData.mobile, formData.password);
       if (result.success) {
         showToast('Signup successful! Please login.', 'success');
         setIsLogin(true);
@@ -96,31 +99,17 @@ const Auth = () => {
           )}
 
           <div className="form-group">
-            <label>Username</label>
+            <label>Mobile Number</label>
             <input
-              type="text"
-              name="username"
-              value={formData.username}
+              type="tel"
+              name="mobile"
+              value={formData.mobile}
               onChange={handleChange}
-              placeholder="Enter username"
+              placeholder="Enter mobile number"
               className="base-input"
-              autoComplete="username"
+              autoComplete="tel"
             />
           </div>
-
-          {!isLogin && (
-            <div className="form-group">
-              <label>Mobile Number</label>
-              <input
-                type="tel"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                placeholder="Enter mobile number"
-                className="base-input"
-              />
-            </div>
-          )}
 
           <div className="form-group">
             <label>Password</label>

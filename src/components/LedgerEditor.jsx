@@ -15,20 +15,23 @@ function LedgerEditor({ setIsEditMode }) {
 
   useEffect(() => {
     if (id) {
-      const saved = getLedgerById(id)
-      if (saved) {
-        setPersonName(saved.name)
-        setRows(saved.entries.map(row => ({
-          ...row,
-          persisted: true
-        })))
-        setLedgerId(saved.id)
-        if (setIsEditMode) setIsEditMode(true)
-      }
+      const fetchLedger = async () => {
+        const saved = await getLedgerById(id);
+        if (saved) {
+          setPersonName(saved.name);
+          setRows(saved.entries.map(row => ({
+            ...row,
+            persisted: true
+          })));
+          setLedgerId(saved._id || saved.id);
+          if (setIsEditMode) setIsEditMode(true);
+        }
+      };
+      fetchLedger();
     }
-  }, [id])
+  }, [id]);
 
-  const handleSaveLedger = () => {
+  const handleSaveLedger = async () => {
     if (!personName.trim()) {
       showToast('Please enter a name first!', 'error')
       return
@@ -55,18 +58,22 @@ function LedgerEditor({ setIsEditMode }) {
       totalPaid += (Number(entry.payment) || 0)
     })
 
-    saveLedger({
-      id: ledgerId,
-      name: personName,
-      entries: finalEntries,
-      totalPurchase,
-      totalPaid
-    })
+    try {
+      await saveLedger({
+        id: ledgerId,
+        name: personName,
+        entries: finalEntries,
+        totalPurchase,
+        totalPaid
+      });
 
-    showToast('Ledger saved successfully!', 'success')
-    if (setIsEditMode) setIsEditMode(false)
-    navigate('/saved')
-  }
+      showToast('Ledger saved successfully!', 'success')
+      if (setIsEditMode) setIsEditMode(false)
+      navigate('/saved')
+    } catch (error) {
+      showToast('Failed to save ledger. Please try again.', 'error');
+    }
+  };
 
   return (
     <div className="card">

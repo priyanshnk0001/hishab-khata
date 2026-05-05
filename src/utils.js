@@ -1,12 +1,12 @@
 const STORAGE_KEY = 'hishab_khata_ledgers';
 const CATERING_STORAGE_KEY = 'hishab_khata_catering';
 
-const getCurrentUsername = () => {
+const getCurrentUserMobile = () => {
   const session = localStorage.getItem('hishab_current_user');
   if (session) {
     try {
       const user = JSON.parse(session);
-      return user.username;
+      return user.mobile;
     } catch (e) {
       return null;
     }
@@ -26,67 +26,82 @@ const getAllCateringRaw = () => {
 };
 
 // --- Public Accessors (Filtered by currentUser) ---
-export const getLedgers = () => {
-  const allLedgers = getAllLedgersRaw();
-  const username = getCurrentUsername();
-  return allLedgers.filter(l => l.createdBy === username);
-};
-
-export const getCateringLedgers = () => {
-  const allCatering = getAllCateringRaw();
-  const username = getCurrentUsername();
-  return allCatering.filter(l => l.createdBy === username);
+export const getLedgers = async () => {
+  const mobile = getCurrentUserMobile();
+  if (!mobile) return [];
+  
+  try {
+    const response = await fetch(`http://localhost:9000/hishab-data?mobile=${mobile}`);
+    const result = await response.json();
+    const data = result.data || [];
+    // Normalize MongoDB _id to id for frontend compatibility
+    return data.map(l => ({ ...l, id: l._id || l.id }));
+  } catch (error) {
+    console.error('Failed to fetch ledgers:', error);
+    return [];
+  }
 };
 
 // --- Ledger Actions ---
-export const saveLedger = (ledger) => {
-  const username = getCurrentUsername();
-  if (!username) throw new Error("Unauthenticated users cannot save ledgers");
+export const saveLedger = async (ledger) => {
+  const mobile = getCurrentUserMobile();
+  if (!mobile) throw new Error("Unauthenticated users cannot save ledgers");
 
-  const allLedgers = getAllLedgersRaw();
-  const index = allLedgers.findIndex(l => l.id === ledger.id);
-  
-  const updatedLedger = {
-    ...ledger,
-    createdBy: ledger.createdBy || username,
-    updatedAt: new Date().toISOString()
-  };
+  try {
+    const response = await fetch('http://localhost:9000/hishab-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...ledger,
+        createdBy: mobile,
+        updatedAt: new Date().toISOString()
+      })
+    });
 
-  if (index >= 0) {
-    if (allLedgers[index].createdBy && allLedgers[index].createdBy !== username) {
-      throw new Error("Unauthorized to edit this ledger");
+    let result;
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      result = await response.json();
+    } else {
+      const text = await response.text();
+      throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}`);
     }
-    allLedgers[index] = updatedLedger;
-  } else {
-    allLedgers.push(updatedLedger);
+
+    if (!response.ok) throw new Error(result.message || 'Failed to save ledger');
+    // Normalize normalized result
+    const savedData = result.data;
+    return { ...savedData, id: savedData._id || savedData.id };
+  } catch (error) {
+    console.error('Save error detail:', error);
+    throw error;
   }
-  
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(allLedgers));
-  return updatedLedger;
 };
 
-export const deleteLedger = (id) => {
-  const username = getCurrentUsername();
-  const allLedgers = getAllLedgersRaw();
-
-  const ledger = allLedgers.find(l => l.id === id);
-  if (ledger && ledger.createdBy && ledger.createdBy !== username) {
-    throw new Error("Unauthorized to delete this ledger");
+export const deleteLedger = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:9000/hishab-data/${id}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('Failed to delete ledger');
+  } catch (error) {
+    console.error('Delete error:', error);
+    throw error;
   }
-
-  const filtered = allLedgers.filter(l => l.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
 };
 
-export const getLedgerById = (id) => {
-  const username = getCurrentUsername();
-  const allLedgers = getAllLedgersRaw();
-  const ledger = allLedgers.find(l => l.id === id);
-  
-  if (ledger && (!ledger.createdBy || ledger.createdBy === username)) {
-    return ledger;
+export const getLedgerById = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:9000/hishab-data`);
+    const result = await response.json();
+    const ledger = result.data.find(l => l._id === id || l.id === id);
+    if (ledger) {
+      return { ...ledger, id: ledger._id || ledger.id };
+    }
+    return undefined;
+  } catch (error) {
+    console.error('Fetch by ID error:', error);
+    return undefined;
   }
-  return undefined;
 };
 
 // --- Catering Actions ---

@@ -21,37 +21,45 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const login = (username, password) => {
-    const users = JSON.parse(localStorage.getItem('hishab_users') || '[]');
-    const user = users.find((u) => u.username === username);
+  const login = async (mobile, password) => {
+    try {
+      const response = await fetch('http://localhost:9000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile_number: mobile, password })
+      });
 
-    if (!user) {
-      return { success: false, message: 'User not found' };
+      const result = await response.json();
+      if (response.ok) {
+        setCurrentUser(result.user);
+        setIsAuthenticated(true);
+        localStorage.setItem('hishab_current_user', JSON.stringify(result.user));
+        return { success: true };
+      } else {
+        return { success: false, message: result.message || 'Login failed' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Server connection failed' };
     }
-
-    if (user.password !== password) {
-      return { success: false, message: 'Incorrect password' };
-    }
-
-    setCurrentUser(user);
-    setIsAuthenticated(true);
-    localStorage.setItem('hishab_current_user', JSON.stringify(user));
-    return { success: true };
   };
 
-  const signup = (name, username, password, mobile) => {
-    const users = JSON.parse(localStorage.getItem('hishab_users') || '[]');
-    const existingUser = users.find((u) => u.username === username);
+  const signup = async (name, mobile, password) => {
+    try {
+      const response = await fetch('http://localhost:9000/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, mobile_number: mobile, password })
+      });
 
-    if (existingUser) {
-      return { success: false, message: 'Username already exists' };
+      const result = await response.json();
+      if (response.ok) {
+        return { success: true };
+      } else {
+        return { success: false, message: result.message || 'Signup failed' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Server connection failed' };
     }
-
-    const newUser = { name, username, password, mobile };
-    users.push(newUser);
-    localStorage.setItem('hishab_users', JSON.stringify(users));
-
-    return { success: true };
   };
 
   const logout = () => {

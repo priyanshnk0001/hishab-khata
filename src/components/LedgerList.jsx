@@ -8,20 +8,29 @@ function LedgerList() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setLedgers(getLedgers())
-  }, [])
+    const fetchLedgers = async () => {
+      const data = await getLedgers();
+      setLedgers(data);
+    };
+    fetchLedgers();
+  }, []);
 
   const [deletingId, setDeletingId] = useState(null)
   const [deletePassword, setDeletePassword] = useState('')
   const [passwordError, setPasswordError] = useState(false)
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (deletePassword === 'confirmed0001') {
-      deleteLedger(id)
-      setLedgers(getLedgers())
-      setDeletingId(null)
-      setDeletePassword('')
-      setPasswordError(false)
+      try {
+        await deleteLedger(id);
+        const data = await getLedgers();
+        setLedgers(data);
+        setDeletingId(null);
+        setDeletePassword('');
+        setPasswordError(false);
+      } catch (error) {
+        console.error('Delete failed:', error);
+      }
     } else {
       setPasswordError(true)
     }

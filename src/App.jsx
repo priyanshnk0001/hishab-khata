@@ -4,9 +4,9 @@ import Home from './components/Home'
 import LedgerEditor from './components/LedgerEditor'
 import LedgerList from './components/LedgerList'
 import LedgerView from './components/LedgerView'
-import CateringEditor from './components/CateringEditor'
-import CateringList from './components/CateringList'
-import CateringView from './components/CateringView'
+// import CateringEditor from './components/CateringEditor'
+// import CateringList from './components/CateringList'
+// import CateringView from './components/CateringView'
 import Toast from './components/ui/Toast'
 import { useToast } from './context/ToastContext'
 import { useAuth } from './context/AuthContext'
@@ -121,10 +121,10 @@ function App() {
           <Route path="/view/:id" element={<ProtectedRoute><LedgerView /></ProtectedRoute>} />
 
           {/* Catering Routes */}
-          <Route path="/catering" element={<ProtectedRoute><CateringEditor setIsEditMode={setIsEditMode} key="new-catering" /></ProtectedRoute>} />
+          {/* <Route path="/catering" element={<ProtectedRoute><CateringEditor setIsEditMode={setIsEditMode} key="new-catering" /></ProtectedRoute>} />
           <Route path="/catering/edit/:id" element={<ProtectedRoute><CateringEditor setIsEditMode={setIsEditMode} key="edit-catering" /></ProtectedRoute>} />
           <Route path="/catering/saved" element={<ProtectedRoute><CateringList /></ProtectedRoute>} />
-          <Route path="/catering/view/:id" element={<ProtectedRoute><CateringView /></ProtectedRoute>} />
+          <Route path="/catering/view/:id" element={<ProtectedRoute><CateringView /></ProtectedRoute>} /> */}
         </Routes>
       </div>
     </Router>
