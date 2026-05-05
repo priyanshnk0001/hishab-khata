@@ -52,6 +52,12 @@ function CateringEditor({ setIsEditMode }) {
     }
   }, [bookingAmount, advancePayment, additionalPayments])
 
+  const preventInvalidChars = (e) => {
+    if (['e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleAddPayment = () => {
     if (!newPayment.amount) {
       showToast('Please enter a payment amount.', 'error')
@@ -131,6 +137,8 @@ function CateringEditor({ setIsEditMode }) {
             <span className="summary-label">Main Booking Amount</span>
             <input
               type="number"
+              min="0"
+              onKeyDown={preventInvalidChars}
               className={`edit-input ${id ? 'locked-input' : ''}`}
               value={bookingAmount || ''}
               onChange={(e) => {
@@ -145,6 +153,8 @@ function CateringEditor({ setIsEditMode }) {
             <span className="summary-label">Advance Payment</span>
             <input
               type="number"
+              min="0"
+              onKeyDown={preventInvalidChars}
               className={`edit-input ${id ? 'locked-input' : ''}`}
               value={advancePayment || ''}
               onChange={(e) => {
@@ -213,8 +223,10 @@ function CateringEditor({ setIsEditMode }) {
                   <td>
                     <input
                       type="number"
+                      min="0"
+                      onKeyDown={preventInvalidChars}
                       placeholder="0.00"
-                      value={newPayment.amount || ''}
+                      value={newPayment.amount === 0 ? '' : newPayment.amount}
                       onChange={(e) => {
                         setNewPayment({ ...newPayment, amount: e.target.value })
                         if (setIsEditMode) setIsEditMode(true)

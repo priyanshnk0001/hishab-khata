@@ -1,6 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Home() {
+  const { isAuthenticated } = useAuth();
   return (
     <div className="home-container">
       <div className="user-name-tag">NARESH</div>
@@ -27,6 +30,14 @@ function Home() {
       <p className="home-subtitle">
         Your complete financial management system. Select a module from the menu above to get started.
       </p>
+      
+      {!isAuthenticated && (
+        <div style={{ marginTop: '2rem' }}>
+          <Link to="/auth" style={{ textDecoration: 'none' }}>
+            <button className="btn btn-primary">Login / Signup</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

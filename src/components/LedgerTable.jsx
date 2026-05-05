@@ -9,6 +9,12 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
     payment: 0
   })
 
+  const preventInvalidChars = (e) => {
+    if (['e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const calculations = useMemo(() => {
     let totalPurchase = 0
     let totalPayment = 0
@@ -96,8 +102,10 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}
                     type="number"
+                    min="0"
+                    onKeyDown={preventInvalidChars}
                     placeholder="0.00"
-                    value={row.purchase || ''}
+                    value={row.purchase === 0 ? '' : row.purchase}
                     onChange={(e) => updateRow(row.id, 'purchase', e.target.value)}
                     readOnly={row.persisted || readOnly}
                   />
@@ -106,8 +114,10 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}
                     type="number"
+                    min="0"
+                    onKeyDown={preventInvalidChars}
                     placeholder="0.00"
-                    value={row.payment || ''}
+                    value={row.payment === 0 ? '' : row.payment}
                     onChange={(e) => updateRow(row.id, 'payment', e.target.value)}
                     readOnly={row.persisted || readOnly}
                   />
@@ -140,16 +150,20 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                 <td>
                   <input
                     type="number"
+                    min="0"
+                    onKeyDown={preventInvalidChars}
                     placeholder="0.00"
-                    value={newEntry.purchase || ''}
+                    value={newEntry.purchase === 0 ? '' : newEntry.purchase}
                     onChange={(e) => setNewEntry({ ...newEntry, purchase: e.target.value })}
                   />
                 </td>
                 <td>
                   <input
                     type="number"
+                    min="0"
+                    onKeyDown={preventInvalidChars}
                     placeholder="0.00"
-                    value={newEntry.payment || ''}
+                    value={newEntry.payment === 0 ? '' : newEntry.payment}
                     onChange={(e) => setNewEntry({ ...newEntry, payment: e.target.value })}
                   />
                 </td>
