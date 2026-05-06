@@ -22,7 +22,7 @@ function LedgerView() {
   const rowsWithBalance = useMemo(() => {
     if (!ledger) return []
     let currentRunningBalance = 0
-    
+
     // Sort rows by Date and ID (creation time)
     const sortedEntries = [...ledger.entries].sort((a, b) => {
       if (a.date !== b.date) {
@@ -59,33 +59,31 @@ function LedgerView() {
           </h1>
         </div>
 
-        <div className="table-wrapper" style={{ marginTop: '3rem' }}>
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Purchase Amount</th>
-                <th>Payment Made</th>
-                <th>Balance</th>
-                <th>Total Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rowsWithBalance.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.date}</td>
-                  <td>{Number(row.purchase).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-                  <td>{Number(row.payment).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-                  <td className={`balance-cell ${row.balance >= 0 ? 'balance-pos' : 'balance-neg'}`}>
-                    {row.balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                  </td>
-                  <td className={`balance-cell ${row.runningBalance >= 0 ? 'balance-pos' : 'balance-neg'}`} style={{ fontWeight: 600 }}>
+        <div className="lv-container" style={{ marginTop: '3rem' }}>
+          <div className="lv-body saved-entry-wrapper">
+            <div className="saved-entry-header no-print">
+              <div className="saved-entry-cell">Date</div>
+              <div className="saved-entry-cell">Purchase</div>
+              <div className="saved-entry-cell">Payment</div>
+              <div className="saved-entry-cell">Balance</div>
+            </div>
+            {rowsWithBalance.map((row) => (
+              <div key={row.id} className="lv-row saved-entry-row">
+                <div className="lv-item saved-entry-cell " data-label="Date">{row.date}</div>
+                <div className="lv-item saved-entry-cell" data-label="Purchase Amount">
+                  {Number(row.purchase).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                </div>
+                <div className="lv-item saved-entry-cell" data-label="Payment Made">
+                  {Number(row.payment).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                </div>
+                <div className="lv-item total-balance-v saved-entry-cell" data-label="Balance">
+                  <span className={row.runningBalance >= 0 ? 'balance-pos' : 'balance-neg'}>
                     {row.runningBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="summary-footer">

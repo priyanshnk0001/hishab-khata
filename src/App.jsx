@@ -43,7 +43,7 @@ function App() {
         />
         <nav className="nav-bar no-print">
           {isAuthenticated ? (
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            <div className="nav-links">
               <NavLink
                 to="/ledger"
                 className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
@@ -59,47 +59,31 @@ function App() {
               >
                 Saved Ledgers
               </NavLink>
-              <div style={{ width: '1px', height: '1.5rem', background: 'var(--glass-border)', margin: '0 0.5rem' }}></div>
-              {/* <NavLink
-                to="/catering"
-                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, '/catering')}
-                end
-              >
-                New Catering
-              </NavLink>
-              <NavLink
-                to="/catering/saved"
-                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, '/catering/saved')}
-              >
-                Saved Catering
-              </NavLink> */}
+              <div className="nav-divider"></div>
             </div>
           ) : (
-            <div></div> /* Empty div to maintain flex spacing if needed */
+            <div></div>
           )}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.1rem' }}>
+          
+          <div className="nav-identity">
+            <div className="identity-text">
               {isAuthenticated && currentUser && (
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                  {currentUser.name || currentUser.username}
+                <div className="nav-user-name">
+                  {currentUser.name || currentUser.mobile}
                 </div>
               )}
-              <Link to="/" style={{ textDecoration: 'none' }} onClick={(e) => handleNavClick(e, '/')}>
-                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', cursor: 'pointer' }}>
-                  Hishab Khata
-                </div>
+              <Link to="/" className="brand-link" onClick={(e) => handleNavClick(e, '/')}>
+                <div className="nav-brand-name">Hishab Khata</div>
               </Link>
             </div>
+            
             {isAuthenticated && (
               <button
+                className="btn btn-secondary logout-btn"
                 onClick={() => {
                   logout();
                   window.location.hash = '#/';
                 }}
-                className="btn btn-secondary"
-                style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
               >
                 Logout
               </button>

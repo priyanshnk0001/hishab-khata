@@ -77,19 +77,18 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
       <div className="table-wrapper">
         <table>
           <thead>
-            <tr>
-              <th style={{ width: '20%' }}>Date</th>
-              <th style={{ width: '20%' }}>Purchase Amount</th>
-              <th style={{ width: '20%' }}>Payment Made</th>
-              <th style={{ width: '15%' }}>Balance</th>
-              <th style={{ width: '15%' }}>Total Balance</th>
-              {!readOnly && <th style={{ width: '10%' }}></th>}
+            <tr className="saved-entry-header">
+              <th className="saved-entry-cell">Date</th>
+              <th className="saved-entry-cell">Purchase</th>
+              <th className="saved-entry-cell">Payment</th>
+              <th className="saved-entry-cell">Balance</th>
+              {!readOnly && <th className="saved-entry-cell desktop-only">Action</th>}
             </tr>
           </thead>
           <tbody>
             {calculations.rows.map((row) => (
-              <tr key={row.id}>
-                <td>
+              <tr key={row.id} className="saved-entry-row">
+                <td data-label="Date" className="saved-entry-cell ">
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}
                     type="date"
@@ -98,7 +97,7 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                     readOnly={row.persisted || readOnly}
                   />
                 </td>
-                <td>
+                <td data-label="Purchase Amount" className="saved-entry-cell">
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}
                     type="number"
@@ -110,7 +109,7 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                     readOnly={row.persisted || readOnly}
                   />
                 </td>
-                <td>
+                <td data-label="Payment Made" className="saved-entry-cell">
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}
                     type="number"
@@ -122,14 +121,11 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                     readOnly={row.persisted || readOnly}
                   />
                 </td>
-                <td className={`balance-cell ${row.balance >= 0 ? 'balance-pos' : 'balance-neg'}`}>
-                  {row.balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                </td>
-                <td className={`balance-cell ${row.runningBalance >= 0 ? 'balance-pos' : 'balance-neg'}`} style={{ fontWeight: 600 }}>
+                <td data-label="Balance" className={`balance-cell saved-entry-cell ${row.runningBalance >= 0 ? 'balance-pos' : 'balance-neg'}`} style={{ fontWeight: 600 }}>
                   {row.runningBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                 </td>
                 {!readOnly && (
-                  <td>
+                  <td className="saved-entry-cell desktop-only" style={{ textAlign: 'center' }}>
                     {!row.persisted && (
                       <button className="delete-btn" onClick={() => deleteRow(row.id)}>Delete</button>
                     )}
@@ -140,14 +136,14 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
 
             {!readOnly && (
               <tr className="new-entry-row">
-                <td>
+                <td data-label="Date">
                   <input
                     type="date"
                     value={newEntry.date}
                     onChange={(e) => setNewEntry({ ...newEntry, date: e.target.value })}
                   />
                 </td>
-                <td>
+                <td data-label="Purchase Amount">
                   <input
                     type="number"
                     min="0"
@@ -157,7 +153,7 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                     onChange={(e) => setNewEntry({ ...newEntry, purchase: e.target.value })}
                   />
                 </td>
-                <td>
+                <td data-label="Payment Made">
                   <input
                     type="number"
                     min="0"
@@ -167,10 +163,10 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
                     onChange={(e) => setNewEntry({ ...newEntry, payment: e.target.value })}
                   />
                 </td>
-                <td colSpan="2" style={{ textAlign: 'center', opacity: 0.5, fontStyle: 'italic', fontSize: '0.9rem' }}>
+                <td className="new-entry-label-cell" style={{ textAlign: 'center', opacity: 0.5, fontStyle: 'italic', fontSize: '0.8rem' }}>
                   (New Entry)
                 </td>
-                <td>
+                <td className="new-entry-action-cell" style={{ textAlign: 'center' }}>
                   <button className="btn btn-primary" onClick={handleSaveEntry} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
                     Save Entry
                   </button>
