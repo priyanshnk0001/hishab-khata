@@ -1,4 +1,5 @@
 import React from 'react';
+import './Home.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -8,16 +9,16 @@ function Home() {
     <div className="home-container">
       <div className="user-name-tag">NARESH</div>
       <div className="home-icon-wrapper">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="80" 
-          height="80" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="80"
+          height="80"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="home-icon"
         >
           <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0" />
@@ -30,7 +31,7 @@ function Home() {
       <p className="home-subtitle">
         Your complete financial management system. Select a module from the menu above to get started.
       </p>
-      
+
       {!isAuthenticated && (
         <div style={{ marginTop: '2rem' }}>
           <Link to="/auth" style={{ textDecoration: 'none' }}>

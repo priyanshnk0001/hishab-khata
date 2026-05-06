@@ -12,6 +12,7 @@ import { useToast } from './context/ToastContext'
 import { useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Auth from './components/Auth'
+import './components/Navbar.css'
 import './App.css'
 
 function App() {

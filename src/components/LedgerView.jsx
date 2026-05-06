@@ -1,23 +1,14 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getLedgerById } from '../utils'
+import Loader from './Loader'
+import './LedgerView.css'
 
 function LedgerView() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [ledger, setLedger] = useState(null)
-
-  useEffect(() => {
-    const fetchLedger = async () => {
-      const data = await getLedgerById(id);
-      if (data) {
-        setLedger(data);
-      } else {
-        navigate('/saved');
-      }
-    };
-    fetchLedger();
-  }, [id, navigate]);
+  const [loading, setLoading] = useState(true)
 
   const rowsWithBalance = useMemo(() => {
     if (!ledger) return []
@@ -47,12 +38,28 @@ function LedgerView() {
     return (Number(ledger.totalPurchase) || 0) - (Number(ledger.totalPaid) || 0)
   }, [ledger])
 
+  useEffect(() => {
+    const fetchLedger = async () => {
+      setLoading(true);
+      const data = await getLedgerById(id);
+      if (data) {
+        setLedger(data);
+      } else {
+        navigate('/saved');
+      }
+      setLoading(false);
+    };
+    fetchLedger();
+  }, [id, navigate]);
+
+  if (loading) return <Loader />;
+
   if (!ledger) return null
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="header-section">
+    <div className="container lv-page-wrapper">
+      <div className="card lv-card-container">
+        <div className="lv-header-section">
           <span>Ledger Account For</span>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 800, borderBottom: '2px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
             {ledger.name}
@@ -60,23 +67,23 @@ function LedgerView() {
         </div>
 
         <div className="lv-container" style={{ marginTop: '3rem' }}>
-          <div className="lv-body saved-entry-wrapper">
-            <div className="saved-entry-header no-print">
-              <div className="saved-entry-cell">Date</div>
-              <div className="saved-entry-cell">Purchase</div>
-              <div className="saved-entry-cell">Payment</div>
-              <div className="saved-entry-cell">Balance</div>
+          <div className="lv-body">
+            <div className="lv-header">
+              <div className="lv-header-item">Date</div>
+              <div className="lv-header-item">Purchase</div>
+              <div className="lv-header-item">Payment</div>
+              <div className="lv-header-item">Balance</div>
             </div>
-            {rowsWithBalance.map((row) => (
-              <div key={row.id} className="lv-row saved-entry-row">
-                <div className="lv-item saved-entry-cell " data-label="Date">{row.date}</div>
-                <div className="lv-item saved-entry-cell" data-label="Purchase Amount">
+            {rowsWithBalance.map((row, index) => (
+              <div key={row.id || row._id || index} className="lv-row">
+                <div className="lv-item" data-label="Date">{row.date}</div>
+                <div className="lv-item" data-label="Purchase Amount">
                   {Number(row.purchase).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                 </div>
-                <div className="lv-item saved-entry-cell" data-label="Payment Made">
+                <div className="lv-item" data-label="Payment Made">
                   {Number(row.payment).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                 </div>
-                <div className="lv-item total-balance-v saved-entry-cell" data-label="Balance">
+                <div className="lv-item total-balance-v" data-label="Balance">
                   <span className={row.runningBalance >= 0 ? 'balance-pos' : 'balance-neg'}>
                     {row.runningBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </span>

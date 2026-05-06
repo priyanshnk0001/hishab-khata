@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import Loader from '../components/Loader';
 
 const AuthContext = createContext();
 
@@ -74,11 +75,12 @@ export const AuthProvider = ({ children }) => {
     login,
     signup,
     logout,
+    isLoading,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!isLoading && children}
+      {isLoading ? <Loader /> : children}
     </AuthContext.Provider>
   );
 };

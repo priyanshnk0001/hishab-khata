@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { saveLedger, getLedgerById } from '../utils'
 import LedgerTable from './LedgerTable'
 import { useToast } from '../context/ToastContext'
+import './LedgerEditor.css'
 
 function LedgerEditor({ setIsEditMode }) {
   const { id } = useParams()
@@ -76,8 +77,8 @@ function LedgerEditor({ setIsEditMode }) {
   };
 
   return (
-    <div className="card">
-      <div className="header-section">
+    <div className="card le-container">
+      <div className="le-header-section">
         <span>Ledger Account For</span>
         <input
           className="name-input"

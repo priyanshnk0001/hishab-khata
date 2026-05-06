@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useToast } from '../context/ToastContext'
+import './LedgerTable.css'
 
 function LedgerTable({ rows, setRows, readOnly = false }) {
   const { showToast } = useToast()
@@ -86,8 +87,8 @@ function LedgerTable({ rows, setRows, readOnly = false }) {
             </tr>
           </thead>
           <tbody>
-            {calculations.rows.map((row) => (
-              <tr key={row.id} className="saved-entry-row">
+            {calculations.rows.map((row, index) => (
+              <tr key={row.id || row._id || index} className="saved-entry-row">
                 <td data-label="Date" className="saved-entry-cell ">
                   <input
                     className={(row.persisted || readOnly) ? 'locked-input' : ''}

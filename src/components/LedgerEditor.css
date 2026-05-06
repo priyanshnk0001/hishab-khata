@@ -1,0 +1,18 @@
+/* Ledger Editor Specific Styles */
+.le-container {
+  position: relative;
+}
+
+.le-header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.le-header-section span {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  font-weight: 700;
+}

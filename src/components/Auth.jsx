@@ -82,7 +82,7 @@ const Auth = () => {
     <div className="auth-container fade-in">
       <div className="card auth-card">
         <h2 className="auth-title">{isLogin ? 'Login' : 'Sign Up'}</h2>
-        
+
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
             <div className="form-group">

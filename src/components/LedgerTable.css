@@ -1,0 +1,345 @@
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.3);
+}
+
+@media (min-width: 601px) {
+  table {
+    table-layout: fixed;
+    width: 100% !important;
+    border-collapse: collapse;
+  }
+}
+
+@media (max-width: 600px) {
+  .ledger-table-container {
+    padding: 0;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr:not(.saved-entry-header) {
+    display: none;
+    /* Hide default header on mobile */
+  }
+
+  tr {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    position: relative;
+  }
+
+  .new-entry-row {
+    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    background: rgba(99, 102, 241, 0.05) !important;
+  }
+
+  td {
+    border: none;
+    padding: 0.75rem 0 !important;
+    position: relative;
+    width: 100%;
+  }
+
+  td:before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Specific handling for non-labeled cells */
+  td:not([data-label]):before {
+    display: none;
+  }
+
+  .new-entry-label-cell {
+    display: none;
+    /* Hide "(New Entry)" text on mobile as the border color indicates it */
+  }
+
+  .new-entry-action-cell {
+    margin-top: 1rem;
+    padding-top: 1rem !important;
+    border-top: 1px solid var(--glass-border) !important;
+  }
+
+  .new-entry-action-cell .btn {
+    width: 100%;
+    padding: 0.8rem !important;
+    font-size: 0.9rem !important;
+
+  }
+
+  .balance-cell {
+    text-align: left !important;
+    font-size: 1.1rem;
+  }
+
+  input {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 0.75rem !important;
+  }
+
+  /* Saved Entry Container Fix */
+  .ledger-table-container,
+  .table-wrapper,
+  .lv-container,
+  .lv-body,
+  .saved-entry-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  table,
+  tbody {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  /* Saved Entry Header & Row - Shared Flex Layout */
+  .saved-entry-header,
+  .saved-entry-row {
+    display: flex !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.5rem 0 !important;
+    gap: 0 !important;
+    box-sizing: border-box !important;
+    margin: 0 0 0.5rem 0 !important;
+  }
+
+  .saved-entry-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    border-radius: 8px 8px 0 0 !important;
+  }
+
+  .saved-entry-row {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Specific distribution for 4 columns on mobile */
+  .saved-entry-cell {
+    display: flex !important;
+    flex: 1 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    padding: 0.1rem 0 !important;
+    border: none !important;
+    font-size: 0.62rem !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+
+  /* Remove repeating labels on mobile */
+  .saved-entry-cell:before {
+    display: none !important;
+  }
+
+  /* Header specific cell styling */
+  .saved-entry-header .saved-entry-cell {
+    font-size: 0.55rem !important;
+    font-weight: 800 !important;
+    color: var(--primary) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0 !important;
+  }
+
+  .saved-entry-cell input {
+    font-size: 0.65rem !important;
+    padding: 0 !important;
+    text-align: center !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+    color: var(--text-main) !important;
+  }
+
+  .saved-entry-cell .delete-btn {
+    padding: 0.1rem 0.2rem !important;
+    font-size: 0.55rem !important;
+  }
+
+  .saved-entry-cell span {
+    font-size: 0.65rem !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Desktop Specific Styles for Saved Entries */
+@media (min-width: 601px) {
+  .saved-entry-header th,
+  .saved-entry-header .saved-entry-cell,
+  .saved-entry-row td,
+  .saved-entry-row .saved-entry-cell,
+  .new-entry-row td {
+    padding: 0.75rem 0.4rem !important;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: table-cell;
+    flex: none !important;
+    overflow: hidden;
+  }
+
+  /* Proportional widths for columns */
+  th:nth-child(1), td:nth-child(1) { width: 18% !important; }
+  th:nth-child(2), td:nth-child(2) { width: 22% !important; }
+  th:nth-child(3), td:nth-child(3) { width: 22% !important; }
+  th:nth-child(4), td:nth-child(4) { width: 18% !important; }
+  th:nth-child(5), td:nth-child(5) { width: 20% !important; }
+
+  .saved-entry-header,
+  .saved-entry-row,
+  .new-entry-row {
+    display: table-row !important;
+    width: 100% !important;
+    background: transparent !important;
+  }
+
+  .saved-entry-header th {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.02em;
+  }
+
+  .saved-entry-cell input,
+  .new-entry-row input {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-main) !important;
+    text-align: center;
+    width: 100% !important;
+    font-size: 0.8rem !important;
+    padding: 0.4rem !important;
+    outline: none;
+  }
+
+  .new-entry-row {
+    background: rgba(99, 102, 241, 0.03) !important;
+    border-top: 2px solid rgba(99, 102, 241, 0.1) !important;
+  }
+
+  .new-entry-row input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(99, 102, 241, 0.15) !important;
+    border-radius: 6px;
+  }
+
+  .new-entry-label-cell {
+    font-size: 0.7rem !important;
+    white-space: nowrap !important;
+    opacity: 0.6;
+  }
+
+  .saved-entry-row:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
+  }
+
+  .btn-primary {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    min-width: 90px;
+  }
+}
+
+th {
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.new-entry-row {
+  background: rgba(99, 102, 241, 0.05) !important;
+  border-top: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.new-entry-row td {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.new-entry-row input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+
+input[type="date"],
+input[type="number"],
+input[type="text"].edit-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: white;
+  padding: 0.6rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  /* width: 100%; */
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: var(--primary);
+}
+
+.balance-cell {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.balance-pos {
+  color: var(--accent-green);
+}
+
+.balance-neg {
+  color: var(--accent-red);
+}

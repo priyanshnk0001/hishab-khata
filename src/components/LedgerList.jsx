@@ -2,22 +2,29 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getLedgers, deleteLedger } from '../utils'
 import axios from 'axios'
+import Loader from './Loader'
+import './LedgerList.css'
 
 function LedgerList() {
   const [ledgers, setLedgers] = useState([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchLedgers = async () => {
-      const data = await getLedgers();
-      setLedgers(data);
-    };
-    fetchLedgers();
-  }, []);
 
   const [deletingId, setDeletingId] = useState(null)
   const [deletePassword, setDeletePassword] = useState('')
   const [passwordError, setPasswordError] = useState(false)
+
+  useEffect(() => {
+    const fetchLedgers = async () => {
+      setLoading(true);
+      const data = await getLedgers();
+      setLedgers(data);
+      setLoading(false);
+    };
+    fetchLedgers();
+  }, []);
+
+  if (loading) return <Loader />;
 
   const handleDelete = async (id) => {
     if (deletePassword === 'confirmed0001') {
@@ -37,8 +44,8 @@ function LedgerList() {
   }
 
   return (
-    <div className="card">
-      <div className="header-section">
+    <div className="card ll-container">
+      <div className="ll-header-section">
         <span>Saved Accounts</span>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 800 }}>All Ledgers</h1>
       </div>
@@ -56,8 +63,8 @@ function LedgerList() {
             const dateA = a.updatedAt ? new Date(a.updatedAt) : new Date(0)
             const dateB = b.updatedAt ? new Date(b.updatedAt) : new Date(0)
             return dateB - dateA
-          }).map((ledger) => (
-            <div key={ledger.id} className="ledger-item">
+          }).map((ledger, index) => (
+            <div key={ledger.id || ledger._id || index} className="ledger-item">
               <div className="ledger-info">
                 <h3>{ledger.name}</h3>
                 <p>Last updated: {ledger.updatedAt ? `${new Date(ledger.updatedAt).toLocaleDateString()} at ${new Date(ledger.updatedAt).toLocaleTimeString()}` : 'Never'}</p>
