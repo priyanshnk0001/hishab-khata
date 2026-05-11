@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HashRouter as Router, Routes, Route, NavLink, Link } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, NavLink, Link, Navigate } from 'react-router-dom'
 import Home from './components/Home'
 import LedgerEditor from './components/LedgerEditor'
 import LedgerList from './components/LedgerList'
@@ -94,10 +94,10 @@ function App() {
 
         <Routes>
           {/* Auth Route */}
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth" element={isAuthenticated ? <Navigate to="/saved" replace /> : <Auth />} />
 
-          {/* Home Route */}
-          <Route path="/" element={<Home />} />
+          {/* Home Route - Redirect to Saved if authenticated */}
+          <Route path="/" element={isAuthenticated ? <Navigate to="/saved" replace /> : <Home />} />
 
           {/* Ledger Routes */}
           <Route path="/ledger" element={<ProtectedRoute><LedgerEditor setIsEditMode={setIsEditMode} key="new-ledger" /></ProtectedRoute>} />
@@ -110,6 +110,7 @@ function App() {
           <Route path="/catering/edit/:id" element={<ProtectedRoute><CateringEditor setIsEditMode={setIsEditMode} key="edit-catering" /></ProtectedRoute>} />
           <Route path="/catering/saved" element={<ProtectedRoute><CateringList /></ProtectedRoute>} />
           <Route path="/catering/view/:id" element={<ProtectedRoute><CateringView /></ProtectedRoute>} /> */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Router>

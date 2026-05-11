@@ -18,7 +18,7 @@ const Auth = () => {
 
   // If somehow they get here while logged in, redirect them
   if (isAuthenticated) {
-    navigate('/');
+    navigate('/saved');
     return null;
   }
 
@@ -49,7 +49,7 @@ const Auth = () => {
       const result = await login(formData.mobile, formData.password);
       if (result.success) {
         showToast('Login successful!', 'success');
-        navigate('/');
+        navigate('/saved');
       } else {
         showToast(result.message, 'error');
       }
