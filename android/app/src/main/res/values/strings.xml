@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">hishab-khata</string>
+    <string name="title_activity_main">hishab-khata</string>
+    <string name="package_name">com.naresh.hishabkhata</string>
+    <string name="custom_url_scheme">com.naresh.hishabkhata</string>
+</resources>

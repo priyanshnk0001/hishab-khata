@@ -7,7 +7,7 @@ function Home() {
   const { isAuthenticated } = useAuth();
   return (
     <div className="home-container">
-      <div className="user-name-tag">NARESH</div>
+      <div className="user-name-tag">Hishab Khata</div>
       <div className="home-icon-wrapper">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ function Home() {
           <path d="M8 7h6M8 11h8M8 15h6" stroke="var(--primary)" strokeWidth="2" />
         </svg>
       </div>
-      <h1 className="home-title">Hishab Khata</h1>
+      <h1 className="home-title"></h1>
       <p className="home-subtitle">
         Your complete financial management system. Select a module from the menu above to get started.
       </p>

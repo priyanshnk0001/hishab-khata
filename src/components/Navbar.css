@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding: 1rem 0;
+  padding: 1rem 0 0 0;
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -75,15 +75,15 @@
   .nav-bar {
     flex-direction: column;
     align-items: stretch;
-    gap: 1rem;
-    padding: 0.75rem 0 1.25rem 0;
+    /* gap: 1rem; */
+    padding: 1.75rem 0 0 0;
   }
 
   .nav-identity {
     order: -1;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 0.25rem;
+    /* margin-bottom: 0.25rem; */
   }
 
   .identity-text {
